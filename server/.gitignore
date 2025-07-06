@@ -1,7 +1,0 @@
-# .gitignore
-node_modules/
-client/node_modules/
-.env
-server/.env
-dist/
-build/
