@@ -5,11 +5,14 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import Description from "../components/Description";
+import { ThemeContext } from "../context/ThemeContext";
+
 const BuyCredit = () => {
   const { user, backendUrl, token, setShowLogin, loadCreditsData } =
     useContext(AppContext);
+  const { darkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
+
   const initPay = async (order) => {
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
@@ -40,61 +43,97 @@ const BuyCredit = () => {
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
+
   const paymentRazorpay = async (planId) => {
     try {
-      if (!user) {
-        setShowLogin(true);
-      }
+      if (!user) return setShowLogin(true);
       const { data } = await axios.post(
         backendUrl + "/api/user/pay-razor",
         { planId },
-        { headers: { Authorization: `Bearer ${token}`} }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      if (data.success) {
-        initPay(data.order);
-      }
+      if (data.success) initPay(data.order);
     } catch (error) {
       toast.error("Something went wrong in payment!");
-
     }
   };
+
   return (
-    <motion.div
-      initial={{ opacity: 0.2, y: 100 }}
-      transition={{ duration: 1 }}
+    <motion.section
+      initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1.2, ease: "easeInOut" }}
       viewport={{ once: true }}
-      className="min-h-[80vh] text-center pt-14 mb-10"
+      className="px-4 py-6 sm:px-10"
     >
-      <button className="border border-gray-400 px-10 py-2 rounded-full mb-6">
-        Our Plans
-      </button>
-      <h1 className="text-center text-3xl font-medium mb-6 sm:mb-10">
-        Choose the plan
-      </h1>
-      <div className="flex flex-wrap justify-center gap-6 text-left">
-        {plans.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white drop-shadow-sm border rounded-lg py-12 px-8 text-gray-600 hover:scale-105 transition-all duration-500 "
+      <div
+        className={`w-full max-w-6xl mx-auto p-6 sm:p-10 border rounded-3xl shadow-xl backdrop-blur-md transition-all duration-700 ease-in-out 
+          ${
+            darkMode
+              ? "bg-gray-900/60 border-gray-700"
+              : "bg-white/60 border-gray-200"
+          }`}
+      >
+        <div className="text-center mb-10">
+          <button
+            className={`px-10 py-2 rounded-full mb-4 transition-all duration-300
+    ${
+      darkMode
+        ? "bg-gray-800 border border-gray-600 text-white hover:bg-gray-700"
+        : "bg-gradient-to-r from-indigo-200 via-purple-100 to-pink-200 border border-gray-300 text-gray-800 hover:from-indigo-300 hover:to-pink-300"
+    }
+  `}
           >
-            <img width={40} src={assets.logo_icon} alt="" />
-            <p className="mt-3 mb-1 font-semibold">{item.id}</p>
-            <p className="text-sm">{item.desc}</p>
-            <p className="mt-6">
-              <span className="text-3xl font-medium"> ${item.price} </span> /{" "}
-              {item.credits} credits
-            </p>
-            <button
-              onClick={() => paymentRazorpay(item.id)}
-              className="w-full bg-gray-800 text-white mt-8 text-sm rounded-md py-2.5 min-w-52 "
+            Our Plans
+          </button>
+
+          <h1
+            className={`text-3xl font-bold mb-4 ${
+              darkMode ? "text-white" : "text-blue-700"
+            }`}
+          >
+            Choose the Plan That Works for You
+          </h1>
+          <p
+            className={`max-w-2xl mx-auto text-sm sm:text-base ${
+              darkMode ? "text-gray-300" : "text-gray-600"
+            }`}
+          >
+            Pick a credit pack and start generating amazing AI visuals
+            instantly.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-6">
+          {plans.map((item, index) => (
+            <div
+              key={index}
+              className={`rounded-xl border p-6 w-72 sm:w-80 shadow-md transition-all duration-500 hover:scale-[1.03]
+                ${
+                  darkMode
+                    ? "bg-gray-800 border-gray-600 text-white"
+                    : "bg-gradient-to-br from-indigo-100 via-white to-pink-100 border-gray-200 text-gray-800"
+                }`}
             >
-              {user ? "Purchase" : "Get Started"}
-            </button>
-          </div>
-        ))}
+              <p className="font-semibold text-lg mb-2">{item.id}</p>
+              <p className="text-sm mb-6">{item.desc}</p>
+              <p className="text-xl font-bold mb-6">
+                ${item.price}{" "}
+                <span className="text-sm font-normal">
+                  / {item.credits} credits
+                </span>
+              </p>
+              <button
+                onClick={() => paymentRazorpay(item.id)}
+                className="w-full bg-blue-600 text-white py-2 rounded-md text-sm hover:bg-blue-700 transition"
+              >
+                {user ? "Purchase" : "Get Started"}
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-    </motion.div>
+    </motion.section>
   );
 };
 

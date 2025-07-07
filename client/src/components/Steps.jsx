@@ -1,29 +1,68 @@
-import React from "react";
+import React, { useContext } from "react";
 import { stepsData } from "../assets/assets";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Steps = () => {
+  const { darkMode } = useContext(ThemeContext);
+
   return (
     <motion.div
-    initial={{opacity:0.2,y:100}}
-    transition={{duration:1}}
-    whileInView={{opacity:1,y:0}}
-    viewport={{once:true}}
-     className="flex flex-col items-center justify-center my-32">
-      <h1 className="text-3xl sm:text-4xl font-semibold mb-2">How it works</h1>
-      <p className="text-lg text-gray-600 mb-8">
+      initial={{ opacity: 0.2, y: 100 }}
+      transition={{ duration: 1 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="flex flex-col items-center justify-center my-32 px-4"
+    >
+      <h1
+        className={`text-3xl sm:text-4xl font-semibold mb-2 ${
+          darkMode ? "text-white" : "text-gray-900"
+        }`}
+      >
+        How it works
+      </h1>
+      <p
+        className={`text-lg mb-8 text-center ${
+          darkMode ? "text-gray-300" : "text-gray-600"
+        }`}
+      >
         Transform Words Into Stunning Images
       </p>
-      <div className="space-y-4 w-full max-w-3xl text-sm">
+
+      {/* Step Cards */}
+      <div className="space-y-4 w-full max-w-3xl">
         {stepsData.map((item, index) => (
           <div
             key={index}
-            className="flex items-center gap-4 p-5 px-8 bg-white/20 shadow-md border cursor-pointer hover:scale=[1.02] transition-all duration-300 rounded-lg"
+            className={`group flex items-center gap-5 p-5 border rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-[1.02] backdrop-blur-md
+              ${darkMode
+                ? "bg-gray-900/50 border-gray-700 hover:bg-gray-800/60"
+                : "bg-white/50 border-gray-200 hover:bg-[#F8F4FF]"}
+            `}
           >
-            <img src={item.icon} alt="" className="w-14" />
+            {/* Icon with grayscale effect */}
+            <img
+              src={item.icon}
+              alt="icon"
+              className="w-14 h-14 object-contain filter grayscale group-hover:grayscale-0 transition duration-300 ease-in-out"
+            />
+
+            {/* Text */}
             <div>
-              <h2 className="text-xl font-medium">{item.title}</h2>
-              <p className="text-gray-500">{item.description}</p>
+              <h2
+                className={`text-lg sm:text-xl font-semibold mb-1 ${
+                  darkMode ? "text-white" : "text-gray-900"
+                }`}
+              >
+                {item.title}
+              </h2>
+              <p
+                className={`text-sm leading-relaxed ${
+                  darkMode ? "text-gray-300" : "text-gray-600"
+                }`}
+              >
+                {item.description}
+              </p>
             </div>
           </div>
         ))}

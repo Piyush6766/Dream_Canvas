@@ -54,8 +54,10 @@ const AppContextProvider = (props) => {
   };
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user"); // Remove user if stored
     setToken("");
     setUser(null);
+    navigate("/"); // Redirect to home after logout
   };
 
   useEffect(() => {

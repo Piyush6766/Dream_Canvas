@@ -73,7 +73,9 @@ export const userCredits = async (req, res) => {
   try {
     const user = await userModel.findById(req.userId);
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     res.json({
@@ -98,15 +100,15 @@ export const paymentRazorpay = async (req, res) => {
 
     let credits, amount;
     switch (planId) {
-      case "Basic":
+      case "Basic Plan":
         credits = 100;
         amount = 10;
         break;
-      case "Advanced":
+      case "Advanced Plan":
         credits = 500;
         amount = 50;
         break;
-      case "Business":
+      case "Business Plan":
         credits = 5000;
         amount = 250;
         break;
@@ -146,14 +148,21 @@ export const verifyRazorPay = async (req, res) => {
 
     const transaction = await transactionModel.findById(orderInfo.receipt);
     if (!transaction || transaction.payment) {
-      return res.json({ success: false, message: "Invalid or already used transaction" });
+      return res.json({
+        success: false,
+        message: "Invalid or already used transaction",
+      });
     }
 
     const user = await userModel.findById(transaction.userId);
     const updatedCredits = user.creditBalance + transaction.credits;
 
-    await userModel.findByIdAndUpdate(user._id, { creditBalance: updatedCredits });
-    await transactionModel.findByIdAndUpdate(transaction._id, { payment: true });
+    await userModel.findByIdAndUpdate(user._id, {
+      creditBalance: updatedCredits,
+    });
+    await transactionModel.findByIdAndUpdate(transaction._id, {
+      payment: true,
+    });
 
     res.json({ success: true, message: "Credits added" });
   } catch (error) {

@@ -7,25 +7,43 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
 import { AppContext } from "./context/AppContext";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Gallery from './components/Gallery';
+import InspiringCreations from "./components/InspiringCreations";
+import Steps from "./components/Steps"; // <-- Import Steps.jsx
+import "./App.css"; // Make sure this includes the custom-bg class
+import AnimatedBackground from "./components/AnimatedBackground";
 
 const App = () => {
   const { showLogin } = useContext(AppContext);
+
   return (
     <>
-      {" "}
-      <div className="px-4 sm:px-10  md:px-14 lg:px-28 min-h-screen bg-gradient-to-r from-violet-200 to-pink-200">
+      <AnimatedBackground />
+      <div className="relative min-h-screen overflow-hidden mx-4 sm:mx-8 md:mx-16 lg:mx-24">
+        {/* Custom Pattern Background */}
+        <div className="custom-bg"></div>
+
+        {/* Toast Notifications */}
         <ToastContainer position="top-center" />
+
+        {/* Navigation Bar */}
         <Navbar />
+
+        {/* Conditional Login Modal */}
         {showLogin && <Login />}
+
+        {/* Main Routing */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/result" element={<Result />} />
           <Route path="/buy" element={<BuyCredit />} />
+          <Route path="/gallery" element={<Gallery />} />
         </Routes>
       </div>
-        <Footer />
+
+     
     </>
   );
 };

@@ -18,36 +18,21 @@ const Login = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      if (state === "Login") {
-        const { data } = await axios.post(backendUrl + "/api/user/login", {
-          email,
-          password,
-        });
-        if (data.success) {
-          setToken(data.token);
-          setUser(data.user);
-          localStorage.setItem("token", data.token);
-          setShowLogin(false);
-        } else {
-          toast.error(data.message);
-        }
+      const route = state === "Login" ? "/login" : "/register";
+      const payload = state === "Login" ? { email, password } : { name, email, password };
+
+      const { data } = await axios.post(`${backendUrl}/api/user${route}`, payload);
+
+      if (data.success) {
+        setToken(data.token);
+        setUser(data.user);
+        localStorage.setItem("token", data.token);
+        setShowLogin(false);
       } else {
-        const { data } = await axios.post(backendUrl + "/api/user/register", {
-          name,
-          email,
-          password,
-        });
-        if (data.success) {
-          setToken(data.token);
-          setUser(data.user);
-          localStorage.setItem("token", data.token);
-          setShowLogin(false);
-        } else {
-          toast.error(data.message);
-        }
+        toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -59,95 +44,111 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 z-10 backdrop-blur-sm bg-black/30 flex justify-center items-center">
+    <div className="fixed inset-0 z-30 bg-black/30 backdrop-blur-sm flex justify-center items-center px-4">
       <motion.div
-        initial={{ opacity: 0.2, y: 50 }}
-        transition={{ duration: 0.3 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="relative bg-white p-10 rounded-xl text-slate-500 flex items-center gap-6"
+        initial={{ opacity: 0.2, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="bg-white max-w-3xl w-full rounded-xl p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 shadow-xl relative"
       >
-        {/* Login Form */}
-        <form onSubmit={onSubmitHandler} className="w-80">
-          <h1 className="text-center -ml-8 text-2xl text-neutral-700 font-medium">
+        {/* Close Button */}
+        <img
+          src={assets.cross_icon}
+          alt="Close"
+          className="absolute top-4 right-4 w-5 cursor-pointer"
+          onClick={() => setShowLogin(false)}
+        />
+
+        {/* Form */}
+        <form onSubmit={onSubmitHandler} className="w-full md:w-1/2">
+          <h2 className="text-2xl font-semibold text-neutral-700 mb-1">
             {state}
-          </h1>
-          <p className="text-sm font-semibold">Welcome back! Please sign in to continue</p>
+          </h2>
+          <p className="text-sm text-gray-500 mb-5">
+            {state === "Login"
+              ? "Welcome back! Sign in to continue."
+              : "Create a new account to get started."}
+          </p>
+
           {state !== "Login" && (
-            <div className="border px-6 py-2 flex items-center gap-2 rounded-full mt-5">
-              <img src={assets.profile_icon} alt="" className="w-5 h-5" />
+            <div className="mb-4">
+              <label className="block text-sm mb-1 text-gray-600">Full Name</label>
               <input
-                onChange={(e) => setName(e.target.value)}
-                value={name}
                 type="text"
-                placeholder="Full Name"
-                className="outline-none text-sm"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your Name"
+                className="w-full border rounded-md px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 outline-none"
                 required
               />
             </div>
           )}
-          <div className="border px-6 py-2 flex items-center gap-2 rounded-full mt-4">
-            <img src={assets.email_icon} alt="" />
+
+          <div className="mb-4">
+            <label className="block text-sm mb-1 text-gray-600">Email Address</label>
             <input
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
               type="email"
-              placeholder="Email Id"
-              className="outline-none text-sm"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="example@mail.com"
+              className="w-full border rounded-md px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 outline-none"
               required
             />
           </div>
-          <div className="border px-6 py-2 flex items-center gap-2 rounded-full mt-4">
-            <img src={assets.lock_icon} alt="" />
+
+          <div className="mb-4">
+            <label className="block text-sm mb-1 text-gray-600">Password</label>
             <input
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
               type="password"
-              placeholder="password"
-              className="outline-none text-sm"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="********"
+              className="w-full border rounded-md px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 outline-none"
               required
             />
           </div>
-          <p className="text-sm text-blue-600 my-4 cursor-pointer">
+
+          <p className="text-sm text-blue-600 mb-4 cursor-pointer hover:underline">
             Forgot password?
           </p>
-          <button className="bg-blue-600 w-full text-white py-2 rounded-full">
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+          >
             {state === "Login" ? "Login" : "Create Account"}
           </button>
-          {state === "Login" ? (
-            <p className="mt-5 text-center">
-              Don't have an account?
-              <span
-                className="text-blue-600 cursor-pointer"
-                onClick={() => setState("Sign Up")}
-              >
-                Sign Up!
-              </span>
-            </p>
-          ) : (
-            <p className="mt-5 text-center">
-              Already have an account?{" "}
-              <span
-                className="text-blue-600 cursor-pointer"
-                onClick={() => setState("Login")}
-              >
-                Login
-              </span>
-            </p>
-          )}
-          <img
-            src={assets.cross_icon}
-            alt=""
-            className="absolute top-5 right-5 cursor-pointer"
-            onClick={() => setShowLogin(false)}
-          />
+
+          <p className="text-sm text-center mt-5">
+            {state === "Login" ? (
+              <>
+                Don’t have an account?{" "}
+                <span
+                  className="text-blue-600 cursor-pointer font-medium hover:underline"
+                  onClick={() => setState("Sign Up")}
+                >
+                  Sign Up
+                </span>
+              </>
+            ) : (
+              <>
+                Already have an account?{" "}
+                <span
+                  className="text-blue-600 cursor-pointer font-medium hover:underline"
+                  onClick={() => setState("Login")}
+                >
+                  Login
+                </span>
+              </>
+            )}
+          </p>
         </form>
 
-        {/* Image on the Right */}
+        {/* Image */}
         <img
           src={assets.login}
-          alt="Login Illustration"
-          className="w-80 h-auto rounded-lg shadow-lg hidden md:block"
+          alt="Illustration"
+          className="hidden md:block w-80 h-auto rounded-lg shadow-lg"
         />
       </motion.div>
     </div>

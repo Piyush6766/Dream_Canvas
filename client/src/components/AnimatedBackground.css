@@ -1,0 +1,32 @@
+.animated-bg {
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(270deg, #0f2027, #203a43, #2c5364);
+  background-size: 600% 600%;
+  animation: gradientShift 10s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes gradientShift {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  width: 200%;
+  height: 20vh;
+  background: url('data:image/svg+xml;utf8,<svg width="1440" height="100" viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 50C120 100 360 0 720 50C1080 100 1320 0 1440 50V100H0V50Z" fill="%23fff" fill-opacity="0.3"/></svg>');
+  background-repeat: repeat-x;
+  background-size: cover;
+  animation: waveMove 8s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes waveMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

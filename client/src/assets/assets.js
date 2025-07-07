@@ -22,6 +22,9 @@ import credit_star from './credit_star.svg'
 import profile_icon from './profile_icon.png'
 import header from './header.svg'
 import login from './login.jpg'
+import golden from './golden.png'
+import piyush1 from './piyush1.png'
+import amit1 from './amit1.png'
 
 export const assets = {
   logo,
@@ -40,8 +43,7 @@ export const assets = {
   star_group,
   credit_star,
   profile_icon,
-  profile,
-  header
+  header,
 }
 
 export const stepsData = [
@@ -69,43 +71,43 @@ export const stepsData = [
 
 export const testimonialsData = [
   {
-    image: profile,
-    name: 'John Doe',
-    role: 'Graphic Designer',
+    image: piyush1,
+    name: 'Piyush Singh',
+    role: 'Developer',
     stars: 5,
-    text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`
+    text: `DreamCanvas is like having a creative partner in my dev toolkit. As a backend developer, I rarely dabble in design, but this tool empowers me to generate stunning visuals for my projects without hiring designers. From UI concept art to landing page backgrounds, it saves time and boosts presentation quality.`
   },
   {
-    image: profile,
-    name: 'John Doe',
-    role: 'Content Creator',
+    image: golden,
+    name: 'Golden Sharma',
+    role: 'Front-end Developer',
     stars: 5,
-    text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`
+    text: `As a frontend developer, visual appeal is crucial—and DreamCanvas delivers. I use it to mock up hero sections, banners, and even animated prompt-based illustrations. It’s intuitive, fast, and integrates perfectly into my workflow. It bridges the gap between code and creativity, making my UI work stand out.`
   },
   {
-    image: profile,
-    name: 'John Doe',
-    role: ' Graphic Designer',
+    image: amit1,
+    name: 'Amit Vishwakarma',
+    role: 'Developer',
     stars: 5,
-    text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`
+    text: `I never imagined AI-generated art could be this refined. DreamCanvas helped me create engaging onboarding screens and promotional images for my mobile app within minutes. It’s accurate, sleek, and surprisingly customizable. Highly recommended for developers who want beautiful assets without the design hassle.`
   },
 ]
 
 export const plans = [
   {
-    id: 'Basic',
+    id: 'Basic Plan',
     price: 10,
     credits: 100,
     desc: 'Best for personal use.'
   },
   {
-    id: 'Advanced',
+    id: 'Advanced Plan',
     price: 50,
     credits: 500,
     desc: 'Best for business use.'
   },
   {
-    id: 'Business',
+    id: 'Business Plan',
     price: 250,
     credits: 5000,
     desc: 'Best for enterprise use.'
