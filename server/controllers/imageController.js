@@ -17,7 +17,7 @@ export const generateImage = async (req, res) => {
 
     const user = await userModel.findById(userId);
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found Please login first" });
     }
 
     if (user.creditBalance <= 0) {
@@ -37,9 +37,9 @@ export const generateImage = async (req, res) => {
         headers: {
           ...form.getHeaders(),
           Accept: "image/*",
-          "x-api-key": process.env.CLIPDROP_API, // ✅ correct header
+          "x-api-key": process.env.CLIPDROP_API,
         },
-        responseType: "arraybuffer", // to receive image data
+        responseType: "arraybuffer", 
       }
     );
 

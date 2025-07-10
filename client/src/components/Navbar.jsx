@@ -74,7 +74,13 @@ const Navbar = () => {
               </p>
             </button>
 
-            <p className="text-gray-600 hidden sm:block">Hi, {user.name}</p>
+            <p
+              className={`text-gray-600 hidden sm:block ${
+                darkMode ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Hi, {user.name}
+            </p>
 
             <div className="relative" ref={dropdownRef}>
               <img
